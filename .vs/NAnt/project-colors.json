@@ -1,0 +1,56 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "b4486ce1-faea-4b20-b7da-1a818759ea70": {
+      "ProjectGuid": "b4486ce1-faea-4b20-b7da-1a818759ea70",
+      "DisplayName": "Solution Items",
+      "ColorIndex": 0
+    },
+    "859696f8-f405-4018-a155-d34561498a3e": {
+      "ProjectGuid": "859696f8-f405-4018-a155-d34561498a3e",
+      "DisplayName": "NAnt.Console",
+      "ColorIndex": 1
+    },
+    "8f5f8375-4097-4952-b860-784eb9961abe": {
+      "ProjectGuid": "8f5f8375-4097-4952-b860-784eb9961abe",
+      "DisplayName": "NAnt.Core",
+      "ColorIndex": 2
+    },
+    "c66545a2-6fec-4a38-937a-5b25e61ee8a1": {
+      "ProjectGuid": "c66545a2-6fec-4a38-937a-5b25e61ee8a1",
+      "DisplayName": "NAnt.Win32",
+      "ColorIndex": 3
+    },
+    "f77ea08e-9473-436a-bba3-880139a341b1": {
+      "ProjectGuid": "f77ea08e-9473-436a-bba3-880139a341b1",
+      "DisplayName": "NAnt.Tests",
+      "ColorIndex": 4
+    },
+    "8f80c098-94a4-44db-a25d-c9e455fc3120": {
+      "ProjectGuid": "8f80c098-94a4-44db-a25d-c9e455fc3120",
+      "DisplayName": "NAnt.Compression",
+      "ColorIndex": 5
+    },
+    "dd434690-b4df-4bf9-91fe-f139a41e2474": {
+      "ProjectGuid": "dd434690-b4df-4bf9-91fe-f139a41e2474",
+      "DisplayName": "NAnt.VSNet",
+      "ColorIndex": 6
+    },
+    "b50a1067-785b-4686-8ffc-5af424bef163": {
+      "ProjectGuid": "b50a1067-785b-4686-8ffc-5af424bef163",
+      "DisplayName": "NAnt.DotNet",
+      "ColorIndex": 7
+    },
+    "6b2ec648-8d69-4096-b4f9-6edc0b2f98ef": {
+      "ProjectGuid": "6b2ec648-8d69-4096-b4f9-6edc0b2f98ef",
+      "DisplayName": "NAnt.SourceControl",
+      "ColorIndex": 8
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 9
+}
