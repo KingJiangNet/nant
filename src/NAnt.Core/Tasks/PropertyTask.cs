@@ -182,13 +182,13 @@ namespace NAnt.Core.Tasks {
                             Project.TargetFramework = newTargetFramework;
                             // only output message in build log if target 
                             // framework is actually changed
-                            Log(Level.Info, "Target framework changed to \"{0}\".", 
-                                newTargetFramework.Description);
+                            Log(Level.Info, "Target framework changed to \"{0}\", Project: {1}.", 
+                                newTargetFramework.Description, Project.ProjectName);
                         }
                     } else {
                         Project.TargetFramework = newTargetFramework;
-                        Log(Level.Info, "Target framework set to \"{0}\".", 
-                            newTargetFramework.Description);
+                        Log(Level.Info, "Target framework set to \"{0}\", Project: {1}.", 
+                            newTargetFramework.Description, Project.ProjectName);
 
                     }
                     return;

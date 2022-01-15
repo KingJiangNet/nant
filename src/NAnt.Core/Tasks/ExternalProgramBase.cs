@@ -31,7 +31,8 @@ using NAnt.Core.Configuration;
 using NAnt.Core.Types;
 using NAnt.Core.Util;
 
-namespace NAnt.Core.Tasks {
+namespace NAnt.Core.Tasks
+{
     /// <summary>
     /// Provides the abstract base class for tasks that execute external applications.
     /// </summary>
@@ -49,9 +50,10 @@ namespace NAnt.Core.Tasks {
     ///   </para>
     /// </remarks>
     [Serializable()]
-    public abstract class ExternalProgramBase : Task {
+    public abstract class ExternalProgramBase : Task
+    {
         #region Private Instance Fields
-        
+        private static readonly string CscPath = !String.IsNullOrEmpty(ConfigurationManager.AppSettings["CscPath"]) ? ConfigurationManager.AppSettings["CscPath"] : @"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\Roslyn\csc.exe";
         private StreamReader _stdError;
         private StreamReader _stdOut;
         private ArgumentCollection _arguments = new ArgumentCollection();
@@ -111,7 +113,7 @@ namespace NAnt.Core.Tasks {
             // the output threads.
             const int defaultTimeout = 2000;
 
-            string appSettingStage = 
+            string appSettingStage =
                 ConfigurationManager.AppSettings.Get(outputTimeoutKey);
 
             if (!String.IsNullOrEmpty(appSettingStage))
@@ -150,7 +152,8 @@ namespace NAnt.Core.Tasks {
         /// file will be used if no name is specified.
         /// </remarks>
         [FrameworkConfigurable("exename")]
-        public virtual string ExeName {
+        public virtual string ExeName
+        {
             get { return (_exeName != null) ? _exeName : Name; }
             set { _exeName = value; }
         }
@@ -165,7 +168,8 @@ namespace NAnt.Core.Tasks {
         /// Override in derived classes to explicitly set the location of the 
         /// external tool.
         /// </remarks>
-        public virtual string ProgramFileName { 
+        public virtual string ProgramFileName
+        {
             get { return DetermineFilePath(); }
         }
 
@@ -190,11 +194,12 @@ namespace NAnt.Core.Tasks {
         /// to be redirected to a file.  Deriving classes should override this 
         /// property to change this behaviour.
         /// </remarks>
-        public virtual FileInfo Output {
-            get { return null; } 
-            set {} //so that it can be overriden.
+        public virtual FileInfo Output
+        {
+            get { return null; }
+            set { } //so that it can be overriden.
         }
-        
+
         /// <summary>
         /// Gets a value indicating whether output will be appended to the 
         /// <see cref="Output" />.
@@ -203,20 +208,22 @@ namespace NAnt.Core.Tasks {
         /// <see langword="true" /> if output should be appended to the <see cref="Output" />; 
         /// otherwise, <see langword="false" />.
         /// </value>
-        public virtual bool OutputAppend {
-            get { return false; } 
-            set {} //so that it can be overriden.
+        public virtual bool OutputAppend
+        {
+            get { return false; }
+            set { } //so that it can be overriden.
         }
-      
+
         /// <summary>
         /// Gets the working directory for the application.
         /// </summary>
         /// <value>
         /// The working directory for the application.
         /// </value>
-        public virtual DirectoryInfo BaseDirectory {
+        public virtual DirectoryInfo BaseDirectory
+        {
             get { return new DirectoryInfo(Project.BaseDirectory); }
-            set {} // so that it can be overriden.
+            set { } // so that it can be overriden.
         }
 
         /// <summary>
@@ -225,7 +232,8 @@ namespace NAnt.Core.Tasks {
         /// </summary>
         [TaskAttribute("timeout")]
         [Int32Validator()]
-        public int TimeOut {
+        public int TimeOut
+        {
             get { return _timeout; }
             set { _timeout = value; }
         }
@@ -234,7 +242,8 @@ namespace NAnt.Core.Tasks {
         /// The command-line arguments for the external program.
         /// </summary>
         [BuildElementArray("arg")]
-        public virtual ArgumentCollection Arguments {
+        public virtual ArgumentCollection Arguments
+        {
             get { return _arguments; }
         }
 
@@ -262,7 +271,8 @@ namespace NAnt.Core.Tasks {
         /// </remarks>
         [FrameworkConfigurable("useruntimeengine")]
         [Obsolete("Use the managed attribute and Managed property instead.", false)]
-        public virtual bool UseRuntimeEngine {
+        public virtual bool UseRuntimeEngine
+        {
             get { return _useRuntimeEngine; }
             set { _useRuntimeEngine = value; }
         }
@@ -290,17 +300,21 @@ namespace NAnt.Core.Tasks {
         ///   </para>
         /// </remarks>
         [FrameworkConfigurable("managed")]
-        public virtual ManagedExecution Managed {
-            get {
+        public virtual ManagedExecution Managed
+        {
+            get
+            {
                 // deal with cases where UseRuntimeEngine is overridden to
                 // return true by default
-                if (UseRuntimeEngine && _managed == ManagedExecution.Default) {
+                if (UseRuntimeEngine && _managed == ManagedExecution.Default)
+                {
                     return ManagedExecution.Auto;
                 }
 
                 return _managed;
             }
-            set {
+            set
+            {
                 _managed = value;
                 UseRuntimeEngine = (value != ManagedExecution.Default);
             }
@@ -318,10 +332,13 @@ namespace NAnt.Core.Tasks {
         /// By default, standard output messages wil be written to the build log
         /// with level <see cref="Level.Info" />.
         /// </remarks>
-        public virtual TextWriter OutputWriter {
-            get { 
-                if (_outputWriter == null) {
-                    _outputWriter = new LogWriter(this, Level.Info, 
+        public virtual TextWriter OutputWriter
+        {
+            get
+            {
+                if (_outputWriter == null)
+                {
+                    _outputWriter = new LogWriter(this, Level.Info,
                         CultureInfo.InvariantCulture);
                 }
                 return _outputWriter;
@@ -341,10 +358,13 @@ namespace NAnt.Core.Tasks {
         /// By default, error output wil be written to the build log with level 
         /// <see cref="Level.Warning" />.
         /// </remarks>
-        public virtual TextWriter ErrorWriter {
-            get { 
-                if (_errorWriter == null) {
-                    _errorWriter = new LogWriter(this, Level.Warning, 
+        public virtual TextWriter ErrorWriter
+        {
+            get
+            {
+                if (_errorWriter == null)
+                {
+                    _errorWriter = new LogWriter(this, Level.Warning,
                         CultureInfo.InvariantCulture);
                 }
                 return _errorWriter;
@@ -360,21 +380,26 @@ namespace NAnt.Core.Tasks {
         /// or <c>-1000</c> if the process could not be started or did not 
         /// exit (in time).
         /// </value>
-        public int ExitCode {
+        public int ExitCode
+        {
             get { return _exitCode; }
         }
 
         /// <summary>
         /// Gets the unique identifier for the spawned application.
         /// </summary>
-        protected int ProcessId {
-            get {
-                if (!Spawn) {
-                    throw new InvalidOperationException ("The unique identifier" +
+        protected int ProcessId
+        {
+            get
+            {
+                if (!Spawn)
+                {
+                    throw new InvalidOperationException("The unique identifier" +
                         " only applies to spawned applications.");
                 }
-                if (_processId == 0) {
-                    throw new InvalidOperationException ("The application was not started.");
+                if (_processId == 0)
+                {
+                    throw new InvalidOperationException("The application was not started.");
                 }
                 return _processId;
             }
@@ -385,7 +410,8 @@ namespace NAnt.Core.Tasks {
         /// spawned. If you spawn an application, its output will not be logged
         /// by NAnt. The default is <see langword="false" />.
         /// </summary>
-        public virtual bool Spawn {
+        public virtual bool Spawn
+        {
             get { return _spawn; }
             set { _spawn = value; }
         }
@@ -402,15 +428,18 @@ namespace NAnt.Core.Tasks {
         ///   <para>-or-</para>
         ///   <para>The exit code of the external process indicates a failure.</para>
         /// </exception>
-        protected override void ExecuteTask() {
+        protected override void ExecuteTask()
+        {
             Thread outputThread = null;
             Thread errorThread = null;
 
-            try {
+            try
+            {
                 // Start the external process
                 Process process = StartProcess();
 
-                if (Spawn) {
+                if (Spawn)
+                {
                     _processId = process.Id;
                     return;
                 }
@@ -431,53 +460,69 @@ namespace NAnt.Core.Tasks {
                 outputThread.Join(outputTimeout);
                 errorThread.Join(outputTimeout);
 
-                if (!process.HasExited) {
-                    try {
+                if (!process.HasExited)
+                {
+                    try
+                    {
                         process.Kill();
-                    } catch {
+                    }
+                    catch
+                    {
                         // ignore possible exceptions that are thrown when the
                         // process is terminated
                     }
 
                     throw new BuildException(
-                        String.Format(CultureInfo.InvariantCulture, 
-                        ResourceUtils.GetString("NA1118"), 
-                        ProgramFileName, 
-                        TimeOut), 
+                        String.Format(CultureInfo.InvariantCulture,
+                        ResourceUtils.GetString("NA1118"),
+                        ProgramFileName,
+                        TimeOut),
                         Location);
                 }
 
                 _exitCode = process.ExitCode;
 
-                if (process.ExitCode != 0) {
+                if (process.ExitCode != 0)
+                {
                     throw new BuildException(
-                        String.Format(CultureInfo.InvariantCulture, 
-                        ResourceUtils.GetString("NA1119"), 
-                        ProgramFileName, 
-                        process.ExitCode), 
+                        String.Format(CultureInfo.InvariantCulture,
+                        ResourceUtils.GetString("NA1119"),
+                        ProgramFileName,
+                        process.ExitCode),
                         Location);
                 }
-            } catch (BuildException e) {
-                if (FailOnError) {
+            }
+            catch (BuildException e)
+            {
+                if (FailOnError)
+                {
                     throw;
-                } else {
+                }
+                else
+                {
                     logger.Error("Execution Error", e);
                     Log(Level.Error, e.Message);
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 logger.Error("Execution Error", e);
 
                 throw new BuildException(
-                    string.Format(CultureInfo.InvariantCulture, "{0}: {1} had errors. Please see log4net log.", GetType().ToString(), ProgramFileName), 
-                    Location, 
+                    string.Format(CultureInfo.InvariantCulture, "{0}: {1} had errors. Please see log4net log.", GetType().ToString(), ProgramFileName),
+                    Location,
                     e);
-            } finally {
+            }
+            finally
+            {
                 // ensure outputThread is always aborted
-                if (outputThread != null && outputThread.IsAlive) {
+                if (outputThread != null && outputThread.IsAlive)
+                {
                     outputThread.Abort();
                 }
                 // ensure errorThread is always aborted
-                if (errorThread != null && errorThread.IsAlive) {
+                if (errorThread != null && errorThread.IsAlive)
+                {
                     errorThread.Abort();
                 }
             }
@@ -490,8 +535,10 @@ namespace NAnt.Core.Tasks {
         /// <summary>
         /// Gets the command-line arguments, separated by spaces.
         /// </summary>
-        public string CommandLine {
-            get {
+        public string CommandLine
+        {
+            get
+            {
                 // append any nested <arg> arguments to the command line
                 StringBuilder arguments = new StringBuilder(ProgramArguments);
                 Arguments.ToString(arguments);
@@ -508,24 +555,30 @@ namespace NAnt.Core.Tasks {
         /// <see cref="Process"/>.
         /// </summary>
         /// <param name="process">The <see cref="Process" /> of which the <see cref="ProcessStartInfo" /> should be updated.</param>
-        protected virtual void PrepareProcess(Process process){
+        protected virtual void PrepareProcess(Process process)
+        {
             ManagedExecutionMode executionMode = ManagedExecutionMode;
 
             // create process (redirect standard output to temp buffer)
-            if (executionMode != null && executionMode.Engine != null) {
+            if (executionMode != null && executionMode.Engine != null)
+            {
                 process.StartInfo.FileName = executionMode.Engine.Program.FullName;
                 StringBuilder arguments = new StringBuilder();
-                executionMode.Engine.Arguments.ToString (arguments);
-                if (arguments.Length >= 0) {
-                    arguments.Append (' ');
+                executionMode.Engine.Arguments.ToString(arguments);
+                if (arguments.Length >= 0)
+                {
+                    arguments.Append(' ');
                 }
                 arguments.AppendFormat("\"{0}\" {1}", ProgramFileName, CommandLine);
                 process.StartInfo.Arguments = arguments.ToString();
-            } else {
+            }
+            else
+            {
                 process.StartInfo.FileName = ProgramFileName;
                 process.StartInfo.Arguments = CommandLine;
             }
-            if (!Spawn) {
+            if (!Spawn)
+            {
                 process.StartInfo.RedirectStandardOutput = true;
                 process.StartInfo.RedirectStandardError = true;
             }
@@ -540,12 +593,18 @@ namespace NAnt.Core.Tasks {
             // set framework-specific environment variables if executing the 
             // external process using the runtime engine of the currently
             // active framework
-            if (executionMode != null) {
-                foreach (EnvironmentVariable environmentVariable in executionMode.Environment.EnvironmentVariables) {
-                    if (environmentVariable.IfDefined && !environmentVariable.UnlessDefined) {
-                        if (environmentVariable.Value == null) {
+            if (executionMode != null)
+            {
+                foreach (EnvironmentVariable environmentVariable in executionMode.Environment.EnvironmentVariables)
+                {
+                    if (environmentVariable.IfDefined && !environmentVariable.UnlessDefined)
+                    {
+                        if (environmentVariable.Value == null)
+                        {
                             process.StartInfo.EnvironmentVariables[environmentVariable.VariableName] = "";
-                        } else {
+                        }
+                        else
+                        {
                             process.StartInfo.EnvironmentVariables[environmentVariable.VariableName] = environmentVariable.Value;
                         }
                     }
@@ -557,15 +616,17 @@ namespace NAnt.Core.Tasks {
         /// Starts the process and handles errors.
         /// </summary>
         /// <returns>The <see cref="Process" /> that was started.</returns>
-        protected virtual Process StartProcess() {
+        protected virtual Process StartProcess()
+        {
             Process p = new Process();
             PrepareProcess(p);
-            try {
+            try
+            {
                 string msg = string.Format(
-                    CultureInfo.InvariantCulture, 
-                    ResourceUtils.GetString("String_Starting_Program"), 
-                    p.StartInfo.WorkingDirectory, 
-                    p.StartInfo.FileName, 
+                    CultureInfo.InvariantCulture,
+                    ResourceUtils.GetString("String_Starting_Program"),
+                    p.StartInfo.WorkingDirectory,
+                    p.StartInfo.FileName,
                     p.StartInfo.Arguments);
 
                 logger.Info(msg);
@@ -573,8 +634,10 @@ namespace NAnt.Core.Tasks {
 
                 p.Start();
                 return p;
-            } catch (Exception ex) {
-                throw new BuildException(string.Format(CultureInfo.InvariantCulture, 
+            }
+            catch (Exception ex)
+            {
+                throw new BuildException(string.Format(CultureInfo.InvariantCulture,
                     ResourceUtils.GetString("NA1121"), p.StartInfo.FileName), Location, ex);
             }
         }
@@ -586,30 +649,38 @@ namespace NAnt.Core.Tasks {
         /// <summary>
         /// Reads from the stream until the external program is ended.
         /// </summary>
-        private void StreamReaderThread_Output() {
+        private void StreamReaderThread_Output()
+        {
             StreamReader reader = _stdOut;
             bool doAppend = OutputAppend;
 
-            while (true) {
+            while (true)
+            {
                 string logContents = reader.ReadLine();
-                if (logContents == null) {
+                if (logContents == null)
+                {
                     break;
                 }
 
                 // ensure only one thread writes to the log at any time
-                lock (_lockObject) {
-                    if (Output != null) {
+                lock (_lockObject)
+                {
+                    if (Output != null)
+                    {
                         StreamWriter writer = new StreamWriter(Output.FullName, doAppend);
                         writer.WriteLine(logContents);
                         doAppend = true;
                         writer.Close();
-                    } else {
+                    }
+                    else
+                    {
                         OutputWriter.WriteLine(logContents);
                     }
                 }
             }
 
-            lock (_lockObject) {
+            lock (_lockObject)
+            {
                 OutputWriter.Flush();
             }
         }
@@ -617,20 +688,25 @@ namespace NAnt.Core.Tasks {
         /// <summary>
         /// Reads from the stream until the external program is ended.
         /// </summary>
-        private void StreamReaderThread_Error() {
+        private void StreamReaderThread_Error()
+        {
             StreamReader reader = _stdError;
             bool doAppend = OutputAppend;
 
-            while (true) {
+            while (true)
+            {
                 string logContents = reader.ReadLine();
-                if (logContents == null) {
+                if (logContents == null)
+                {
                     break;
                 }
 
                 // ensure only one thread writes to the log at any time
-                lock (_lockObject) {
+                lock (_lockObject)
+                {
                     ErrorWriter.WriteLine(logContents);
-                    if (Output != null) {
+                    if (Output != null)
+                    {
                         StreamWriter writer = new StreamWriter(Output.FullName, doAppend);
                         writer.WriteLine(logContents);
                         doAppend = true;
@@ -639,7 +715,8 @@ namespace NAnt.Core.Tasks {
                 }
             }
 
-            lock (_lockObject) {
+            lock (_lockObject)
+            {
                 ErrorWriter.Flush();
             }
         }
@@ -651,75 +728,110 @@ namespace NAnt.Core.Tasks {
         /// A fully qualifies pathname including the program name.
         /// </returns>
         /// <exception cref="BuildException">The task is not available or not configured for the current framework.</exception>
-        private string DetermineFilePath() {
+        private string DetermineFilePath()
+        {
             string fullPath = "";
-            
+
             // if the Exename is already specified as a full path then just use that.
-            if (ExeName != null && Path.IsPathRooted(ExeName)) {
+            if (ExeName != null && Path.IsPathRooted(ExeName))
+            {
                 return ExeName;
             }
 
             // get the ProgramLocation attribute
-            ProgramLocationAttribute programLocationAttribute = (ProgramLocationAttribute) Attribute.GetCustomAttribute(this.GetType(), 
+            ProgramLocationAttribute programLocationAttribute = (ProgramLocationAttribute)Attribute.GetCustomAttribute(this.GetType(),
                 typeof(ProgramLocationAttribute));
 
-            if (programLocationAttribute != null) {
+            if (programLocationAttribute != null)
+            {
                 // ensure we have a valid framework set.
-                if ((programLocationAttribute.LocationType == LocationType.FrameworkDir || 
+                if ((programLocationAttribute.LocationType == LocationType.FrameworkDir ||
                     programLocationAttribute.LocationType == LocationType.FrameworkSdkDir) &&
-                    (Project.TargetFramework == null)) {
-                    throw new BuildException(string.Format(CultureInfo.InvariantCulture, 
+                    (Project.TargetFramework == null))
+                {
+                    throw new BuildException(string.Format(CultureInfo.InvariantCulture,
                         ResourceUtils.GetString("NA1120") + Environment.NewLine, Name));
                 }
 
-                switch (programLocationAttribute.LocationType) {
+                switch (programLocationAttribute.LocationType)
+                {
                     case LocationType.FrameworkDir:
-                        if (Project.TargetFramework.FrameworkDirectory != null) {
-                            string frameworkDir = Project.TargetFramework.FrameworkDirectory.FullName;
-                            fullPath = Path.Combine(frameworkDir, ExeName + ".exe");
-                        } else {
+                        //Console.WriteLine("sdkDirectory: {0}", Project.TargetFramework.SdkDirectory);
+
+                        if (Project.TargetFramework.SdkDirectory != null)
+                        {
+                            string sdkDirectory = Project.TargetFramework.SdkDirectory.FullName;
+                            //fullPath = Path.Combine(sdkDirectory, ExeName + ".exe");
+                            //Console.WriteLine("csc in sdkDirectory: {0}", fullPath);                            
+                        }
+
+                        if ((string.IsNullOrEmpty(fullPath)) && Project.TargetFramework.FrameworkDirectory != null)
+                        {
+                            if (string.Equals(Path.GetFileNameWithoutExtension(ExeName), "Csc", StringComparison.OrdinalIgnoreCase) && File.Exists(CscPath))
+                            {
+                                fullPath = CscPath;
+                            }
+                            else
+                            {
+                                string frameworkDir = Project.TargetFramework.FrameworkDirectory.FullName;
+                                fullPath = Path.Combine(frameworkDir, ExeName + ".exe");
+                            }
+                        }
+                        else
+                        {
                             throw new BuildException(
-                                string.Format(CultureInfo.InvariantCulture, 
-                                ResourceUtils.GetString("NA1124"), 
+                                string.Format(CultureInfo.InvariantCulture,
+                                ResourceUtils.GetString("NA1124"),
                                 Project.TargetFramework.Name));
                         }
                         break;
                     case LocationType.FrameworkSdkDir:
-                        if (Project.TargetFramework.SdkDirectory != null) {
+                        if (Project.TargetFramework.SdkDirectory != null)
+                        {
                             string sdkDirectory = Project.TargetFramework.SdkDirectory.FullName;
                             fullPath = Path.Combine(sdkDirectory, ExeName + ".exe");
-                        } else {
+                        }
+                        else
+                        {
                             throw new BuildException(
-                                string.Format(CultureInfo.InvariantCulture, 
-                                ResourceUtils.GetString("NA1122"), 
+                                string.Format(CultureInfo.InvariantCulture,
+                                ResourceUtils.GetString("NA1122"),
                                 Project.TargetFramework.Name));
                         }
                         break;
                 }
 
-                if (!File.Exists (fullPath)) {
-                    string toolPath = Project.TargetFramework.GetToolPath (
+                if (!File.Exists(fullPath))
+                {
+                    string toolPath = Project.TargetFramework.GetToolPath(
                         ExeName + ".exe");
-                    if (toolPath != null) {
+                    if (toolPath != null)
+                    {
                         fullPath = toolPath;
                     }
                 }
-            } else {
+            }
+            else
+            {
                 // rely on it being on the path.
                 fullPath = ExeName;
             }
             return fullPath;
         }
 
-        private ManagedExecutionMode ManagedExecutionMode {
-            get {
-                if (Project.TargetFramework == null || Managed == ManagedExecution.Default) {
+        private ManagedExecutionMode ManagedExecutionMode
+        {
+            get
+            {
+                if (Project.TargetFramework == null || Managed == ManagedExecution.Default)
+                {
                     return null;
                 }
 
                 Runtime runtime = Project.TargetFramework.Runtime;
-                if (runtime != null) {
-                    return runtime.Modes.GetExecutionMode (Managed);
+                if (runtime != null)
+                {
+                    return runtime.Modes.GetExecutionMode(Managed);
                 }
                 return null;
             }

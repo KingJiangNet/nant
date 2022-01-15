@@ -19,9 +19,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfigurationAttribute("dev")]
 [assembly: AssemblyCompanyAttribute("http://nant.sourceforge.net")]
 [assembly: AssemblyProductAttribute("NAnt")]
-[assembly: AssemblyCopyrightAttribute("Copyright (C) 2001-2013 Gerry Shaw")]
+[assembly: AssemblyCopyrightAttribute("Copyright (C) 2001-2022 Gerry Shaw")]
 [assembly: AssemblyTrademarkAttribute("")]
 [assembly: AssemblyCultureAttribute("")]
-[assembly: AssemblyVersionAttribute("0.93.5019.0")]
-[assembly: AssemblyInformationalVersionAttribute("0.93")]
+[assembly: AssemblyVersionAttribute("1.93.5019.0")]
+[assembly: AssemblyInformationalVersionAttribute("1.93")]
 
